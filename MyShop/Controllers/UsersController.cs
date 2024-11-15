@@ -39,8 +39,9 @@ namespace MyShop.Controllers
         public ActionResult Post([FromBody] User user)
         {
             User newUser = services.createUser(user);
-            return CreatedAtAction(nameof(Get), new { id = newUser.UserId }, newUser);
-
+            if(user!=null)
+                return CreatedAtAction(nameof(Get), new { id = newUser.UserId }, newUser);
+            return BadRequest("סיסמה לא חזקה");
         }
         // POST api/<UsersController>
         [HttpPost("login")]
@@ -52,12 +53,17 @@ namespace MyShop.Controllers
 
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] User userToUpdate)
+        public IActionResult Put(int id, [FromBody] User userToUpdate)
         {
-            services.updateUser(id, userToUpdate);
-
-
-
+            try
+            {
+              services.updateUser(id, userToUpdate);
+            }
+            catch (Exception e)
+            {
+                return BadRequest();
+            }
+            return Ok();
         }
 
 

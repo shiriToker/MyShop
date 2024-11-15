@@ -26,12 +26,16 @@ namespace Services
 
         public void updateUser(int id, User userToUpdate)
         {
+           if(Password(userToUpdate.Password) < 3)
+            {
+                throw new Exception("סיסמה חלשה מדי");
+            }
             repository.updateUser(id, userToUpdate);
 
         }
         public User createUser(User user)
         {
-            return repository.createUser(user);
+            return Password(user.Password)<3 ?null:repository.createUser(user);
         }
         public int Password(string password)
         {
