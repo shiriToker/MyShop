@@ -41,7 +41,7 @@ namespace MyShop.Controllers
             User newUser = services.createUser(user);
             if(user!=null)
                 return CreatedAtAction(nameof(Get), new { id = newUser.UserId }, newUser);
-            return BadRequest("סיסמה לא חזקה!");
+            return BadRequest("סיסמה לא חזקה");
         }
         // POST api/<UsersController>
         [HttpPost("login")]
