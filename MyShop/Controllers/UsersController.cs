@@ -28,15 +28,15 @@ namespace MyShop.Controllers
 
         // GET api/<UsersController>/5
         [HttpGet("{id}")]
-        public ActionResult<User> Get(int id)
+        public async Task <ActionResult<User>> Get(int id)
         {
-            User user = services.getById(id);
+             User user =await services.getById(id);
             return (user == null ? NoContent() : Ok(user));
         }
 
         //POST api/<UsersController>
         [HttpPost]
-        public ActionResult Post([FromBody] User user)
+        public  ActionResult Post([FromBody] User user)
         {
             User newUser = services.createUser(user);
             if(user!=null)
@@ -45,9 +45,9 @@ namespace MyShop.Controllers
         }
         // POST api/<UsersController>
         [HttpPost("login")]
-        public IActionResult LogIn([FromQuery] string UserName,string Password)
+        public async Task<IActionResult> LogIn([FromQuery] string UserName,string Password)
         {
-            User user=services.LogIn(Password, UserName);
+            User user=await services.LogIn(Password, UserName);
             return (user == null ? NoContent() : Ok(user));
         }
 

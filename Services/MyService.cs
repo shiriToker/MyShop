@@ -14,19 +14,19 @@ namespace Services
 
         }
 
-        public User getById(int id)
+        public Task<User> getById(int id)
         {
             return repository.getById(id);
 
         }
-        public User LogIn(string Password, string UserName)
+        public Task<User> LogIn(string Password, string UserName)
         {
             return repository.LogIn(Password, UserName);
         }
 
         public void updateUser(int id, User userToUpdate)
         {
-           if(Password(userToUpdate.Password) < 3)
+            if (Password(userToUpdate.Password) < 3)
             {
                 throw new Exception("סיסמה חלשה מדי");
             }
@@ -35,7 +35,7 @@ namespace Services
         }
         public User createUser(User user)
         {
-            return Password(user.Password)<3 ?null:repository.createUser(user);
+            return Password(user.Password) < 3 ? null : repository.createUser(user);
         }
         public int Password(string password)
         {

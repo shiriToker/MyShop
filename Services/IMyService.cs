@@ -5,8 +5,8 @@ namespace Services
     public interface IMyService
     {
         User createUser(User user);
-        User getById(int id);
-        User LogIn(string Password, string UserName);
+        Task<User> getById(int id);
+        Task<User> LogIn(string Password, string UserName);
         int Password(string password);
         void updateUser(int id, User userToUpdate);
     }
