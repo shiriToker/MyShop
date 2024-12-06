@@ -4,7 +4,7 @@ namespace Services
 {
     public interface IMyService
     {
-        User createUser(User user);
+        Task<User> createUser(User user);
         Task<User> getById(int id);
         Task<User> LogIn(string Password, string UserName);
         int Password(string password);

@@ -33,9 +33,9 @@ namespace Services
             repository.updateUser(id, userToUpdate);
 
         }
-        public User createUser(User user)
+        public async Task<User> createUser(User user)
         {
-            return Password(user.Password) < 3 ? null : repository.createUser(user);
+            return Password(user.Password) < 3 ? null : await repository.createUser(user);
         }
         public int Password(string password)
         {

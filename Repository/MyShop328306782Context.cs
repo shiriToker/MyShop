@@ -46,5 +46,7 @@ public partial class MyShop328306782Context : DbContext
         OnModelCreatingPartial(modelBuilder);
     }
 
+  
+
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

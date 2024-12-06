@@ -36,9 +36,9 @@ namespace MyShop.Controllers
 
         //POST api/<UsersController>
         [HttpPost]
-        public  ActionResult Post([FromBody] User user)
+        public  async Task<ActionResult> Post([FromBody] User user)
         {
-            User newUser = services.createUser(user);
+            User newUser = await services.createUser(user);
             if(user!=null)
                 return CreatedAtAction(nameof(Get), new { id = newUser.UserId }, newUser);
             return BadRequest("סיסמה לא חזקה");

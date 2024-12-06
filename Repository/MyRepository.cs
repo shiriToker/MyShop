@@ -20,16 +20,17 @@ namespace Repository
             return user == null ? null : user;
 
         }
-        public User createUser(User user)
+        public async Task<User> createUser(User user)
         {
-            _dbcontext.Users.Add(user);
+            await _dbcontext.Users.AddAsync(user);
+            await _dbcontext.SaveChangesAsync();
             return user;
 
         }
         public async Task updateUser(int id, User userToUpdate)
         {
-            User user = await _dbcontext.Users.FindAsync(id);
-            user = userToUpdate;
+            userToUpdate.UserId = id;
+            _dbcontext.Update(userToUpdate);
             await _dbcontext.SaveChangesAsync();
         }
 
