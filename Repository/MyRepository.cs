@@ -27,7 +27,7 @@ namespace Repository
             return user;
 
         }
-        public async Task updateUser(int id, User userToUpdate)
+        public async Task updateUser(int id, User userToUpdate)//return user
         {
             userToUpdate.UserId = id;
             _dbcontext.Update(userToUpdate);
