@@ -24,7 +24,7 @@ namespace Services
             return repository.LogIn(Password, UserName);
         }
 
-        public void updateUser(int id, User userToUpdate)
+        public void updateUser(int id, User userToUpdate)//return user
         {
             if (Password(userToUpdate.Password) < 3)
             {
