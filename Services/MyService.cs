@@ -14,23 +14,23 @@ namespace Services
 
         }
 
-        public Task<User> getById(int id)
+        public async Task<User> getById(int id)
         {
-            return repository.getById(id);
+            return await repository.getById(id);
 
         }
-        public Task<User> LogIn(string Password, string UserName)
+        public async Task<User> LogIn(string Password, string UserName)
         {
-            return repository.LogIn(Password, UserName);
+            return await repository.LogIn(Password, UserName);
         }
 
-        public void updateUser(int id, User userToUpdate)
+        public async Task updateUser(int id, User userToUpdate)
         {
             if (Password(userToUpdate.Password) < 3)
             {
                 throw new Exception("סיסמה חלשה מדי");
             }
-            repository.updateUser(id, userToUpdate);
+           await repository.updateUser(id, userToUpdate);
 
         }
         public async Task<User> createUser(User user)

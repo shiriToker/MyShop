@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using Services;
+using DTO;
+using AutoMapper;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,31 +16,29 @@ namespace MyShop.Controllers
     public class UsersController : ControllerBase
     {
         IMyService services;
-        public UsersController(IMyService myServices)
+        IMapper Mapper;
+        public UsersController(IMyService myServices,IMapper mapper)
         {
-            services = myServices; 
+            services = myServices;
+            Mapper = mapper;
         }
 
-        // GET: api/<UsersController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "My", "Shop" };
-        }
-
+       
         // GET api/<UsersController>/5
         [HttpGet("{id}")]
-        public async Task <ActionResult<User>> Get(int id)
+        public async Task <ActionResult<UserGetByIdDTO>> Get(int id)
         {
              User user =await services.getById(id);
-            return (user == null ? NoContent() : Ok(user));
+            UserGetByIdDTO userGetByIdDTO = Mapper.Map<User, UserGetByIdDTO>(user);
+            return Ok(userGetByIdDTO);
         }
 
         //POST api/<UsersController>
         [HttpPost]
-        public  async Task<ActionResult> Post([FromBody] User user)
+        public  async Task<ActionResult> Post([FromBody] UserCreateDTO user)
         {
-            User newUser = await services.createUser(user);
+            User newuser = Mapper.Map<UserCreateDTO, User>(user);
+            User newUser = await services.createUser(newuser);
             if(user!=null)
                 return CreatedAtAction(nameof(Get), new { id = newUser.UserId }, newUser);
             return BadRequest("סיסמה לא חזקה");
@@ -53,17 +53,11 @@ namespace MyShop.Controllers
 
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] User userToUpdate)
+        public async Task Put(int id, [FromBody] UserCreateDTO userToUpdate)
         {
-            try
-            {
-              services.updateUser(id, userToUpdate);
-            }
-            catch (Exception e)
-            {
-                return BadRequest();
-            }
-            return Ok();
+            User newUserToUpdate = Mapper.Map<UserCreateDTO, User>(userToUpdate);
+            await services.updateUser(id, newUserToUpdate);
+                     
         }
 
 
@@ -73,15 +67,6 @@ namespace MyShop.Controllers
             int result = services.Password(Password);
             return (result<3?BadRequest(result):Ok(result));
         }
-
-
-        // DELETE api/<UsersController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-
-
 
     }
 }

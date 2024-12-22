@@ -16,8 +16,8 @@ namespace Repository
 
         public async Task<User> getById(int id)
         {
-            User user = await _dbcontext.Users.FindAsync(id);
-            return user == null ? null : user;
+            User user = await _dbcontext.Users.Include(user => user.Orders).FirstOrDefaultAsync(user=>user.UserId==id);
+            return user;
 
         }
         public async Task<User> createUser(User user)
@@ -30,7 +30,7 @@ namespace Repository
         public async Task updateUser(int id, User userToUpdate)
         {
             userToUpdate.UserId = id;
-            _dbcontext.Update(userToUpdate);
+            _dbcontext.Users.Update(userToUpdate);
             await _dbcontext.SaveChangesAsync();
         }
 
