@@ -60,7 +60,6 @@ namespace MyShop.Controllers
                      
         }
 
-
         [HttpPost("password")]
         public IActionResult Password([FromQuery] string Password)
         {

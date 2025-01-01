@@ -11,5 +11,4 @@ namespace DTO
 
     public record CreatOrdrItemDTO(int ProductId, int Quantity);
 
-
 }

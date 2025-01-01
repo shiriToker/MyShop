@@ -18,13 +18,17 @@ namespace Repository
 
         }
 
-        public async Task<List<Product>> getAll()
+        public async Task<List<Product>> getAll(int position,int skip,string? desc,int? minPrice,int? maxPrice, int?[]categoryIds)
         {
-            List<Product> products = await _dbcontext.Products.Include(c=>c.Caregory).ToListAsync();
-            return products;
+     
+            var query=_dbcontext.Products.Where(product=>
+            (desc==null?(true):(product.Description.Contains(desc)))
+            &&((minPrice==null)?(true):(product.Price>=minPrice))
+            &&((maxPrice==null)?(true)
 
         }
     
+
 
 
     
