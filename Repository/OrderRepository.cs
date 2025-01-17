@@ -27,6 +27,8 @@ namespace Repository
         }
         public async Task<Order> createOrder(Order newOrder)
         {
+
+            newOrder.OrserDate = DateOnly.FromDateTime(DateTime.Now);
             await _dbcontext.Orders.AddAsync(newOrder);
             await _dbcontext.SaveChangesAsync();
             Order order = await _dbcontext.Orders.Include(currentOrder => currentOrder.User).FirstOrDefaultAsync(currentOrder => currentOrder.OrderId == newOrder.OrderId);

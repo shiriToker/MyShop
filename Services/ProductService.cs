@@ -19,9 +19,9 @@ namespace Services
         }
 
 
-        public async Task<List<Product>> getAll()
+        public async Task<List<Product>> getAll(int position, int skip, string? name, int? minPrice, int? maxPrice, int?[] categoryIds)
         {
-            return await repository.getAll();
+            return await repository.getAll(position, skip, name, minPrice, maxPrice, categoryIds);
 
         }
 

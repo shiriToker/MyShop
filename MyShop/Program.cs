@@ -20,7 +20,7 @@ builder.Services.AddDbContext<MyShop328306782Context>(Options => Options.UseSqlS
 
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddEndpointsApiExplorer(); 
 builder.Services.AddSwaggerGen();
 var app = builder.Build();
 if (app.Environment.IsDevelopment())

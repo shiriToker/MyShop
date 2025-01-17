@@ -90,7 +90,7 @@ const logInUser = async () => {
             if (dataPost) {
                 console.log(dataPost)
                 sessionStorage.setItem("user", JSON.stringify(dataPost))
-                window.location.href = "Update.html";
+                window.location.href = "ShoppingBag.html";
 
             }
         }

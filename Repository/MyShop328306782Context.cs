@@ -88,7 +88,10 @@ public partial class MyShop328306782Context : DbContext
                 .HasMaxLength(50)
                 .IsFixedLength()
                 .HasColumnName("PRODUCT_NAME");
-
+            entity.Property(e => e.ImgUrl)
+                .HasMaxLength(50)
+                .IsFixedLength()
+                .HasColumnName("IMG_URL");
             entity.HasOne(d => d.Caregory).WithMany(p => p.Products)
                 .HasForeignKey(d => d.CaregoryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
