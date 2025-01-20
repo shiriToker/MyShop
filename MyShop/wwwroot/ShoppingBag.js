@@ -45,7 +45,12 @@ const clearCartHtml = () => {
 
 const deleteItem = (product) => {
     let orderList = getCartFromSessionStorage()
-    orderList = orderList.filter(item => item.productId != product.productId )
+    for (var i = 0; i < orderList.length; i++) {
+        if (orderList[i].productId == product.productId) {
+            orderList.splice(i, 1);
+            break;
+        }    
+    }
     sessionStorage.setItem("orderList", JSON.stringify(orderList))
     ShowProductsCards()
     calculateCountAndAmount()
@@ -84,7 +89,6 @@ const createOrder = async (orderList) => {
                 },
                 body: JSON.stringify(orderPost)
             }
-
         );
         return true
     }
