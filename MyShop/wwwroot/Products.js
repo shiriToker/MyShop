@@ -12,6 +12,7 @@ const getFilters = () => {
 
 const GetProducts = async () => {
     const filters = getFilters();
+    //add query params to url just if they have value
     let url = `api/Products?name=${filters.name}&minPrice=${filters.minPrice}&maxPrice=${filters.maxPrice}`
     if (filterCategories.length > 0) 
         for (let i = 0; i < filterCategories.length; i++) {
