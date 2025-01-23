@@ -90,6 +90,7 @@ const createOrder = async (orderList) => {
                 body: JSON.stringify(orderPost)
             }
         );
+        //if res...
         return true
     }
         catch (e) {
@@ -104,7 +105,7 @@ const createOrderPost = (orderList) => {
         orderSum: document.getElementById('totalAmount').textContent,
             userId: JSON.parse(sessionStorage.getItem("user")).userId,
             orderItems: orderList.map(item => { return { productId: item.productId, quantity:1 } })
-
+            
     }
 }
 

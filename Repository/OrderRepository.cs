@@ -23,6 +23,7 @@ namespace Repository
         {
             Order order = await _dbcontext.Orders.Include(currentOrder => currentOrder.User).FirstOrDefaultAsync(currentOrder => currentOrder.OrderId == id);
             return order == null ? null : order;
+            //return order, if it's null- will return null
 
         }
         public async Task<Order> createOrder(Order newOrder)
