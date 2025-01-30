@@ -9,14 +9,14 @@ using System.Text;
 
 namespace TestProject
 {
-    public class DatabaseFixture
+    public class DatabaseFixture: IDisposable
     {
         public MyShop328306782Context Context { get; private set; }
 
         public DatabaseFixture()
         {
             var options = new DbContextOptionsBuilder<MyShop328306782Context>()
-            .UseSqlServer("server=srv2\\pupils;Database=Test;Trusted_Connection=True;")
+            .UseSqlServer("server=שירי;Database=Test;Trusted_Connection=True;TrustServerCertificate=True;")
             .Options;
             Context = new MyShop328306782Context(options);
             Context.Database.EnsureCreated();
