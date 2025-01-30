@@ -9,11 +9,11 @@ namespace MyShop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoryController : ControllerBase
+    public class CategorysController : ControllerBase
     {
         ICategoryService service;
         IMapper Mapper;
-        public CategoryController(ICategoryService categoryService,IMapper mapper)
+        public CategorysController(ICategoryService categoryService,IMapper mapper)
         {
             service = categoryService;
             Mapper = mapper;

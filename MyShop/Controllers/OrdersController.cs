@@ -10,18 +10,18 @@ namespace MyShop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrderController : ControllerBase
+    public class OrdersController : ControllerBase
     {
         IOrderService service;
         IMapper Mapper;
-        public OrderController(IOrderService categoryService,IMapper mapper)
+        public OrdersController(IOrderService categoryService,IMapper mapper)
         {
             service = categoryService;
             Mapper = mapper;
         }
 
 
-        // GET api/<OrderController>/5
+        // GET api/<OrdersController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<OrderDTO>> Get(int id)
         {
@@ -30,7 +30,7 @@ namespace MyShop.Controllers
             return  Ok(orderDTO);
         }
 
-        // POST api/<OrderController>
+        // POST api/<OrdersController>
         [HttpPost]
         public async Task<ActionResult<OrderDTO>> Post([FromBody] OrderCreatDTO order)
         {

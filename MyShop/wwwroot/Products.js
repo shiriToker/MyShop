@@ -45,7 +45,7 @@ const clearProductsHtml = () => {
 
 const GetCategories = async () => {
     try {
-        const response = await fetch(`https://localhost:44351/api/Category`);
+        const response = await fetch(`https://localhost:44351/api/Categorys`);
         const categories = await response.json();
         return categories;
     }
