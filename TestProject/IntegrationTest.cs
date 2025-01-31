@@ -19,7 +19,7 @@ namespace TestProject
         }
 
         [Fact]
-        public async Task GetUser_ValidCredentials_ReturnsUser()
+        public async Task LogIn_ValidCredentials_ReturnsUser()
         {
             var user = new User { UserName = "shirit782@gmail.com", Password = "Student@264" };
             _context.Users.Add(user);
