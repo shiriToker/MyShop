@@ -10,7 +10,6 @@ namespace TestProject
 {
     public class IntegrationTest :IClassFixture<DatabaseFixture>
     {
-
         private readonly MyShop328306782Context _context;
 
         public IntegrationTest(DatabaseFixture fixture)
@@ -64,9 +63,5 @@ namespace TestProject
             // Assert
             Assert.Null(result);  // הפונקציה צריכה להחזיר null בגלל שסיסמה לא נכונה
         }
-
-
-
-
     }
 }
