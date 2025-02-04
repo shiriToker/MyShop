@@ -26,7 +26,7 @@ namespace TestProject
         {
             // Arrange
             var mocContext = new Mock<MyShop328306782Context>();
-            var users = new List<User>(); // לא הוספתי משתמשים
+            var users = new List<User>();
             mocContext.Setup(x => x.Users).ReturnsDbSet(users);
 
             var userRepository = new MyRepository(mocContext.Object);
@@ -35,7 +35,7 @@ namespace TestProject
             var result = await userRepository.LogIn("wrongPassword", "nonExistentUser");
 
             // Assert
-            Assert.Null(result);  // המשתמש לא קיים, אז הפונקציה מחזירה null
+            Assert.Null(result); 
         }
 
         [Fact]
@@ -46,17 +46,14 @@ namespace TestProject
             var mocContext = new Mock<MyShop328306782Context>();
             var users = new List<User> { user };
             mocContext.Setup(x => x.Users).ReturnsDbSet(users);
-
             var userRepository = new MyRepository(mocContext.Object);
 
             // Act
-            var result = await userRepository.LogIn("wrongPassword", user.UserName); // סיסמה לא נכונה
+            var result = await userRepository.LogIn("wrongPassword", user.UserName); 
 
             // Assert
-            Assert.Null(result);  // הפונקציה צריכה להחזיר null בגלל שסיסמה לא נכונה
+            Assert.Null(result); 
         }
-
-
 
     }
 }

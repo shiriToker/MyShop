@@ -16,7 +16,7 @@ namespace TestProject
         public DatabaseFixture()
         {
             var options = new DbContextOptionsBuilder<MyShop328306782Context>()
-            .UseSqlServer("server=שירי;Database=Test;Trusted_Connection=True;TrustServerCertificate=True;")
+            .UseSqlServer("server=srv2\\pupils;Database=Tests;Trusted_Connection=True;TrustServerCertificate=True;")
             .Options;
             Context = new MyShop328306782Context(options);
             Context.Database.EnsureCreated();

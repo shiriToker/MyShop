@@ -29,7 +29,7 @@ const ShowProductsCards = () => {
 const ShowOneProduct = (product) => {
     let tmp = document.getElementById('temp-row');
     let cloneProduct = tmp.content.cloneNode(true);
-    cloneProduct.querySelector('.image').style.backgroundImage = `./pic/${product.imgUrl}`;
+    cloneProduct.querySelector('.image').style.backgroundImage = `./images/${product.imgUrl}`;
     cloneProduct.querySelector('.itemName').innerText = product.productName
     cloneProduct.querySelector('.price').textContent = product.price;
     cloneProduct.querySelector('.DeleteButton').addEventListener("click", () => { deleteItem(product); });

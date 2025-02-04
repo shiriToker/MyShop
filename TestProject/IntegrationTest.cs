@@ -44,7 +44,7 @@ namespace TestProject
             var result = await userRepository.LogIn("wrongPassword", "nonExistentUser");
 
             // Assert
-            Assert.Null(result);  // המשתמש לא קיים, אז הפונקציה מחזירה null
+            Assert.Null(result);  
         }
 
         [Fact]
@@ -58,10 +58,10 @@ namespace TestProject
             var userRepository = new MyRepository(_context);
 
             // Act
-            var result = await userRepository.LogIn("wrongPassword", user.UserName); // סיסמה שגויה
+            var result = await userRepository.LogIn("wrongPassword", user.UserName); 
 
             // Assert
-            Assert.Null(result);  // הפונקציה צריכה להחזיר null בגלל שסיסמה לא נכונה
+            Assert.Null(result);  
         }
     }
 }

@@ -78,7 +78,7 @@ const ShowCategories = async () => {
 const ShowOneProduct = (product) => {
     let tmp = document.getElementById('temp-card');
     let cloneProduct = tmp.content.cloneNode(true);
-    cloneProduct.querySelector('img').src = `./pic/${product.imgUrl}`;
+    cloneProduct.querySelector('img').src = `./images/${product.imgUrl}`;
     cloneProduct.querySelector('h1').textContent = product.productName;
     cloneProduct.querySelector('.price').innerText = product.price;
     cloneProduct.querySelector('.description').innerText = product.description;
