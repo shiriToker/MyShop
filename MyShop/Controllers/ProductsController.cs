@@ -27,8 +27,6 @@ namespace MyShop.Controllers
        
         public async  Task <ActionResult<List<ProductDTO>>> getAll([FromQuery] int position, [FromQuery] int skip, [FromQuery] string? name, [FromQuery] int? minPrice, [FromQuery] int? maxPrice, [FromQuery] int?[] categoryIds)
         {
-
-
             List<Product> products = await service.getAll(position, skip, name, minPrice, maxPrice,categoryIds);
             List<ProductDTO> productDTOs = Mapper.Map<List<Product>, List<ProductDTO>>(products);
             return Ok(productDTOs) ;

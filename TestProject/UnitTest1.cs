@@ -2,6 +2,7 @@ using Entity;
 using Moq;
 using Moq.EntityFrameworkCore;
 using Repository;
+using Services;
 namespace TestProject
 {
     public class UnitTest1
@@ -53,6 +54,25 @@ namespace TestProject
 
             // Assert
             Assert.Null(result); 
+        }
+
+
+        [Fact]
+        public async Task CreateOrder_checkOrderSum_ReturnsOrder()
+        {
+            // Arrange
+            var orderItems = new List<OrderItem>() { new() { ProductId = 1 } };
+            var order = new Order { OrderSum=6, OrderItems=orderItems };
+            var mocContext = new Mock<MyShop328306782Context>();
+            var orders = new List<Order> { order };
+            mocContext.Setup(x => x.Orders).ReturnsDbSet(orders);
+            var orderService = new OrderService(mocContext.Object);
+
+            // Act
+            var result = await orderService.createOrder(order);
+
+            // Assert
+            Assert.Null(result);
         }
 
     }
