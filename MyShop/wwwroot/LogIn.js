@@ -51,9 +51,9 @@ const checkPassword = async () => {
 }
 const addNewUser = async () => {
     const newUser = getDetailsSignUp();
-    
+
     try {
-       await checkPassword();
+        await checkPassword();
         const responsePost = await fetch(`https://localhost:44351/api/Users`, {
             method: 'POST',
             headers: {
@@ -61,11 +61,14 @@ const addNewUser = async () => {
             },
             body: JSON.stringify(newUser)
         })
+        if (responsePost.status == 400)
+            throw new Error(`!כל השדות חובה, בדוק את תקינותם`)
         if (!responsePost.ok)
-            throw new Error(`כל השדות חובה`)
+            throw new Error(`משהו השתבש, נסה שוב`)
         const dataPost = await responsePost.json();
-     alert("משתמש נוסף בהצלחה")
+        alert("משתמש נוסף בהצלחה")
     }
+
     catch (error) {
         alert(error)
     }
@@ -81,28 +84,18 @@ const logInUser = async () => {
             },
 
         })
-        if (!responsePost.ok) {
-            throw new Error(`error status :${responsePost.status}`)
+        if (responsePost.status == 400)
+            throw new Error(`כל השדות חובה`)
+        if (responsePost.status == 400)
+            throw new Error(`משתמש לא רשום`)
+        if (!responsePost.ok)
+            throw new Error(`משהו השתבש, נסה שוב`)
 
-        }
-        try {
-            const dataPost = await responsePost.json();
-            if (dataPost) {
-                sessionStorage.setItem("user", JSON.stringify(dataPost))
-                window.location.href = "ShoppingBag.html";
-
-            }
-        }
-        catch (error) {
-            alert("משתמש לא רשום")
-        }
+        const dataPost = await responsePost.json();
+        sessionStorage.setItem("user", JSON.stringify(dataPost))
+        window.location.href = "ShoppingBag.html";
     }
     catch (error) {
         alert("שגיאה בכניסה למערכת")
     }
 }
-
-
-
-
-

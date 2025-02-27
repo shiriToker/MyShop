@@ -12,9 +12,6 @@ const calculateCountAndAmount = () => {
 
 }
 
-
-
-
 const ShowProductsCards = () => {
     clearCartHtml()
     const products = getCartFromSessionStorage();
@@ -36,9 +33,6 @@ const ShowOneProduct = (product) => {
     document.querySelector('.cistGroup').appendChild(cloneProduct);
 }
 
-
-
-
 const clearCartHtml = () => {
     document.querySelector('.cistGroup').innerHTML = '';
 }
@@ -59,12 +53,13 @@ const deleteItem = (product) => {
 
 const payment =async () => {
     let orderList = getCartFromSessionStorage();
-   const bool= await createOrder(orderList)
-    if (bool) {
-
-sessionStorage.removeItem("orderList");
-    clearCartHtml()
-
+   const newOrder= await createOrder(orderList)
+    if (newOrder) {
+      sessionStorage.removeItem("orderList");
+        clearCartHtml()
+        console.log(newOrder)
+        alert(`הזמנה מספר ${newOrder}`);
+        window.location.href = "Products.html";
     }
     
 }
@@ -75,11 +70,8 @@ const createOrder = async (orderList) => {
         return false
 
     }
-       
-
-    let url = `api/Order`
-    const orderPost = createOrderPost(orderList)
-    
+    let url = `api/Orders`
+    const orderPost = createOrderPost(orderList)  
     try {
         const response = await fetch(url
             , {
@@ -90,13 +82,13 @@ const createOrder = async (orderList) => {
                 body: JSON.stringify(orderPost)
             }
         );
-        return true
+        /*   const newOrder = await response.json();*/
+        return response;
     }
         catch (e) {
-             alert(e)
+        alert(e)
+        return null
         }
-
-
 }
 
 const createOrderPost = (orderList) => {
@@ -111,18 +103,3 @@ const createOrderPost = (orderList) => {
 ShowProductsCards();
 
 calculateCountAndAmount()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
