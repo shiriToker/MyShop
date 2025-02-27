@@ -62,7 +62,7 @@ const addNewUser = async () => {
             body: JSON.stringify(newUser)
         })
         if (!responsePost.ok)
-            throw new Error(`error status :${responsePost.status}`)
+            throw new Error(`כל השדות חובה`)
         const dataPost = await responsePost.json();
      alert("משתמש נוסף בהצלחה")
     }
@@ -88,7 +88,6 @@ const logInUser = async () => {
         try {
             const dataPost = await responsePost.json();
             if (dataPost) {
-                console.log(dataPost)
                 sessionStorage.setItem("user", JSON.stringify(dataPost))
                 window.location.href = "ShoppingBag.html";
 

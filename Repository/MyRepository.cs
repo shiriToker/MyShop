@@ -28,11 +28,12 @@ namespace Repository
             return user;
 
         }
-        public async Task updateUser(int id, User userToUpdate)
+        public async Task<User> updateUser(int id, User userToUpdate)
         {
             userToUpdate.UserId = id;
             _dbcontext.Users.Update(userToUpdate);
             await _dbcontext.SaveChangesAsync();
+            return userToUpdate;
         }
 
         public async Task<User> LogIn(string Password, string UserName)

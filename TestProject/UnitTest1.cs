@@ -56,17 +56,51 @@ namespace TestProject
             Assert.Null(result); 
         }
 
-
         [Fact]
         public async Task CreateOrder_checkOrderSum_ReturnsOrder()
         {
             // Arrange
             var orderItems = new List<OrderItem>() { new() { ProductId = 1 } };
-            var order = new Order { OrderSum=6, OrderItems=orderItems };
-            var mocContext = new Mock<MyShop328306782Context>();
-            var orders = new List<Order> { order };
-            mocContext.Setup(x => x.Orders).ReturnsDbSet(orders);
-            var orderService = new OrderService(mocContext.Object);
+            var order = new Order { OrderSum = 6, OrderItems = orderItems };
+
+            var mockOrderRepository = new Mock<IOrderRepository>();
+            var mockProductRepository = new Mock<IProductRepository>();
+
+            var products = new List<Product> { new Product { ProductId = 1, Price = 6 } };
+            mockProductRepository.Setup(x => x.getAll(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<int?>(), It.IsAny<int?[]>()))
+                                 .ReturnsAsync(products);
+
+            mockOrderRepository.Setup(x => x.createOrder(It.IsAny<Order>()))
+                               .ReturnsAsync(order);
+
+            var orderService = new OrderService(mockOrderRepository.Object, mockProductRepository.Object);
+
+            // Act
+            var result = await orderService.createOrder(order);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(order, result);
+        }
+
+        [Fact]
+        public async Task CreateOrder_checkOrderSum_ReturnsNull()
+        {
+            // Arrange
+            var orderItems = new List<OrderItem>() { new() { ProductId = 1 } };
+            var order = new Order { OrderSum = 3, OrderItems = orderItems };
+
+            var mockOrderRepository = new Mock<IOrderRepository>();
+            var mockProductRepository = new Mock<IProductRepository>();
+
+            var products = new List<Product> { new Product { ProductId = 1, Price = 6 } };
+            mockProductRepository.Setup(x => x.getAll(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<int?>(), It.IsAny<int?[]>()))
+                                 .ReturnsAsync(products);
+
+            mockOrderRepository.Setup(x => x.createOrder(It.IsAny<Order>()))
+                               .ReturnsAsync(order);
+
+            var orderService = new OrderService(mockOrderRepository.Object, mockProductRepository.Object);
 
             // Act
             var result = await orderService.createOrder(order);
@@ -74,6 +108,8 @@ namespace TestProject
             // Assert
             Assert.Null(result);
         }
+
+
 
     }
 }

@@ -24,13 +24,13 @@ namespace Services
             return await repository.LogIn(Password, UserName);
         }
 
-        public async Task updateUser(int id, User userToUpdate)
+        public async Task<User> updateUser(int id, User userToUpdate)
         {
             if (Password(userToUpdate.Password) < 3)
             {
                 throw new Exception("סיסמה חלשה מדי");
             }
-           await repository.updateUser(id, userToUpdate);
+          return await repository.updateUser(id, userToUpdate);
 
         }
         public async Task<User> createUser(User user)

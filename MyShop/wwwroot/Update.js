@@ -58,13 +58,17 @@ const updateUser = async () => {
             body: JSON.stringify(updateUser)
         })
         if (!responsePut.ok)
-            throw new Error(`error status :${responsePut.status}`)
-        const dataPut = responsePut.json();
-        if (dataPut)
-            alert("עודכן בהצלחה")
+            throw new Error(`HTTP error! status ${responsePut.status}`)
+
+        if (responsePut.status == 200) {
+            sessionStorage.setItem("user", JSON.stringify(await responsePut.json()));
+            alert(`פרטי משתמש ${currentUser.userId} עודכנו בהצלחה!`)
+            window.location.href = "Products.html";
+        }
+           
     }
     catch (error) {
-        alert(error)
+        alert("מצטערים משהו השתשב נסה שוב...\nהשגיאה:" + error)
     }
 
 

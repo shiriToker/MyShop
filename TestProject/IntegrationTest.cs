@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 using Moq.EntityFrameworkCore;
 using Repository;
+using Services;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -62,6 +63,60 @@ namespace TestProject
 
             // Assert
             Assert.Null(result);  
+        }
+
+        [Fact]
+        public async Task CreateOrder_checkOrderSum_ReturnsOrder()
+        {
+            // Arrange
+            var products = new List<Product> { new Product { Price = 6, ProductName="eggs", CaregoryId=1, Caregory=new()
+            {CategoryName="basic"} ,Description="beautiful eggs",ImgUrl="6.jpeg" }
+          };
+            _context.Products.AddRange(products);
+            await _context.SaveChangesAsync();
+
+            var orderItems = new List<OrderItem>() { new() { ProductId = 1 } };
+            var order = new Order { OrderSum = 6, OrderItems = orderItems };
+            var orderRepository = new OrderRepository(_context);
+            var productRepository = new ProductRepository(_context);
+
+         
+
+            var orderService = new OrderService(orderRepository, productRepository);
+
+            // Act
+            var result = await orderService.createOrder(order);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(order, result);
+        }
+
+        [Fact]
+        public async Task CreateOrder_checkOrderSum_ReturnsNull()
+        {
+            // Arrange
+            var products = new List<Product> { new Product { Price = 6, ProductName="eggs", CaregoryId=1, Caregory=new()
+            {CategoryName="basic"} ,Description="beautiful eggs",ImgUrl="6.jpeg" }
+          };
+
+            _context.Products.AddRange(products);
+            await _context.SaveChangesAsync();
+
+            var orderItems = new List<OrderItem>() { new() { ProductId = 1 } };
+            var order = new Order { OrderSum = 3, OrderItems = orderItems };
+            var orderRepository = new OrderRepository(_context);
+            var productRepository = new ProductRepository(_context);
+
+
+
+            var orderService = new OrderService(orderRepository, productRepository);
+
+            // Act
+            var result = await orderService.createOrder(order);
+
+            // Assert
+            Assert.Null(result);
         }
     }
 }

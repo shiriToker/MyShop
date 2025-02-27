@@ -7,6 +7,6 @@ namespace Repository
         Task<User> createUser(User user);
         Task<User> getById(int id);
         Task<User> LogIn(string Password, string UserName);
-        Task updateUser(int id, User userToUpdate);
+        Task<User> updateUser(int id, User userToUpdate);
     }
 }

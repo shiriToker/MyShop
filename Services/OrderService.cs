@@ -34,7 +34,7 @@ namespace Services
         private async Task<bool> checkSum(Order order)
         {
             decimal sum = 0;
-            List<Product> products = await productRepository.getAll(0, 0, null, 0, 0, null);
+            List<Product> products = await productRepository.getAll(0, 0, null, null, null, []);
 
             foreach (var item in order.OrderItems)
             {
