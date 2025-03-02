@@ -34,10 +34,10 @@ namespace MyShop.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<UserGetByIdDTO>> Get(int id)
         {
-            if (!cache.TryGetValue("users", out User user))
+            if (!cache.TryGetValue("user", out User user))
             {
                 user = await services.getById(id);
-                cache.Set("users", user, TimeSpan.FromMinutes(10));
+                cache.Set("user", user, TimeSpan.FromMinutes(10));
             }
             UserGetByIdDTO userGetByIdDTO = Mapper.Map<User, UserGetByIdDTO>(user);
             return Ok(userGetByIdDTO);

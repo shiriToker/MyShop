@@ -28,11 +28,11 @@ namespace MyShop.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<OrderDTO>> Get(int id)
         {
-            if (!cache.TryGetValue("orders", out Order order))
+            if (!cache.TryGetValue("order", out Order order))
             {
 
                 order = await service.getById(id);
-                cache.Set("orders", order, TimeSpan.FromMinutes(10));
+                cache.Set("order", order, TimeSpan.FromMinutes(10));
 
             }
             OrderDTO orderDTO = Mapper.Map<Order, OrderDTO>(order);
