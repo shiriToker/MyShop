@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace Entity;
 
-
 public partial class Order
 {
     public int OrderId { get; set; }

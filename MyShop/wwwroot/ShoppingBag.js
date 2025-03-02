@@ -35,6 +35,7 @@ const ShowOneProduct = (product) => {
 
 const clearCartHtml = () => {
     document.querySelector('.cistGroup').innerHTML = '';
+
 }
 
 const deleteItem = (product) => {
@@ -57,9 +58,9 @@ const payment =async () => {
     if (newOrder) {
       sessionStorage.removeItem("orderList");
         clearCartHtml()
-        console.log(newOrder)
-        alert(`הזמנה מספר ${newOrder}`);
-        window.location.href = "Products.html";
+        const myOrder = await newOrder.json()
+        alert(`הזמנה מספר ${myOrder.orderId} התקבלה בהצלחה`);
+         window.location.href = "Products.html";
     }
     
 }

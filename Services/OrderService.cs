@@ -15,6 +15,7 @@ namespace Services
 
         public OrderService(IOrderRepository myRepository,IProductRepository ProductRepository)
         {
+
             repository = myRepository;
             productRepository = ProductRepository;
         }
@@ -28,7 +29,9 @@ namespace Services
         public async Task<Order> createOrder(Order order)
         {
             if (!await checkSum(order))
-                return null;
+            {
+                return null;             
+            }
             return await repository.createOrder(order);
         }
         private async Task<bool> checkSum(Order order)
@@ -40,7 +43,7 @@ namespace Services
             {
               sum+=products.Find(i=>i.ProductId==item.ProductId).Price;      
             }
-            return sum == order.OrderSum;
+            return Math.Floor( sum )==Math.Floor((decimal)order.OrderSum);
         }
 
     }

@@ -4,6 +4,7 @@ using System.Text.Json;
 using Services;
 using DTO;
 using AutoMapper;
+using Microsoft.Extensions.Caching.Memory;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,15 +16,17 @@ namespace MyShop.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        IMyService services;
-        IMapper Mapper;
+        private readonly IMyService services;
+        private readonly IMapper Mapper;
         private readonly ILogger<UsersController> _logger;
+        private readonly IMemoryCache cache;
 
-        public UsersController(IMyService myServices, IMapper mapper, ILogger<UsersController> logger)
+        public UsersController(IMyService myServices, IMapper mapper, ILogger<UsersController> logger,IMemoryCache memoryCache)
         {
             services = myServices;
             Mapper = mapper;
             _logger = logger;
+            cache = memoryCache;
         }
 
 
@@ -31,7 +34,11 @@ namespace MyShop.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<UserGetByIdDTO>> Get(int id)
         {
-            User user = await services.getById(id);
+            if (!cache.TryGetValue("users", out User user))
+            {
+                user = await services.getById(id);
+                cache.Set("users", user, TimeSpan.FromMinutes(10));
+            }
             UserGetByIdDTO userGetByIdDTO = Mapper.Map<User, UserGetByIdDTO>(user);
             return Ok(userGetByIdDTO);
         }

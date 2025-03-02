@@ -1,11 +1,6 @@
 using Entity;
-using Microsoft.EntityFrameworkCore;
-using Moq;
-using Moq.EntityFrameworkCore;
 using Repository;
 using Services;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace TestProject
 {
@@ -79,9 +74,6 @@ namespace TestProject
             var order = new Order { OrderSum = 6, OrderItems = orderItems };
             var orderRepository = new OrderRepository(_context);
             var productRepository = new ProductRepository(_context);
-
-         
-
             var orderService = new OrderService(orderRepository, productRepository);
 
             // Act
@@ -107,9 +99,6 @@ namespace TestProject
             var order = new Order { OrderSum = 3, OrderItems = orderItems };
             var orderRepository = new OrderRepository(_context);
             var productRepository = new ProductRepository(_context);
-
-
-
             var orderService = new OrderService(orderRepository, productRepository);
 
             // Act
