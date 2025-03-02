@@ -29,6 +29,8 @@ const GetProducts = async () => {
 
         );
         const products = await response.json();
+        const countProducts = document.getElementById("counter");
+        countProducts.innerText = products.length;
         return products;
     }
     catch (e) {

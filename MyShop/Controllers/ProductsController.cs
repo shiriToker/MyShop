@@ -2,7 +2,6 @@
 using DTO;
 using Entity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 using Services;
 using System.Text.Json.Nodes;
 
@@ -15,14 +14,13 @@ namespace MyShop.Controllers
     public class ProductsController : ControllerBase
     {
 
-        private readonly IProductService service;
+       private readonly IProductService service;
         private readonly IMapper Mapper;
-        private readonly IMemoryCache cache;
-        public ProductsController(IProductService categoryService, IMapper mapper,IMemoryCache memoryCache)
+
+        public ProductsController(IProductService categoryService, IMapper mapper)
         {
             service = categoryService;
             Mapper = mapper;
-            cache = memoryCache;
         }
 
         // GET: api/<ProductsController>
@@ -30,11 +28,7 @@ namespace MyShop.Controllers
        
         public async  Task <ActionResult<List<ProductDTO>>> getAll([FromQuery] int position, [FromQuery] int skip, [FromQuery] string? name, [FromQuery] int? minPrice, [FromQuery] int? maxPrice, [FromQuery] int?[] categoryIds)
         {
-            if (!cache.TryGetValue("products", out List<Product> products))
-            {
-                products = await service.getAll(position, skip, name, minPrice, maxPrice,categoryIds);
-                cache.Set("products", products, TimeSpan.FromMinutes(10));
-            }
+            List<Product> products = await service.getAll(position, skip, name, minPrice, maxPrice,categoryIds);
             List<ProductDTO> productDTOs = Mapper.Map<List<Product>, List<ProductDTO>>(products);
             return Ok(productDTOs) ;
         }
