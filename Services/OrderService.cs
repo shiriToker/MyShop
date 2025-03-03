@@ -33,7 +33,7 @@ namespace Services
         {
             if (!await checkSum(order))
             {
-                logger.LogCritical("someone try to hak you!!!!!");
+                logger.LogCritical($"UserId {order.UserId} tried to rob you, a security breach was found!!!!!");
                 return null;             
             }
             return await repository.createOrder(order);

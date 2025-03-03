@@ -1,5 +1,4 @@
-﻿
-const filterCategories = [];
+﻿const arrFilterCategories = [];
 
 const getFilters = () => {
     const filters = {
@@ -10,13 +9,26 @@ const getFilters = () => {
     return filters;
 }
 
+const getUrlForGetProducts = async () => {
+    const filters = await getFilters();
+    const baseUrl = `api/Products?`;
+    const queryParams = [];
+
+    if (filters.nameSearch) queryParams.push(`nameSearch=${encodeURIComponent(filters.nameSearch)}`);
+    if (filters.minPrice) queryParams.push(`minPrice=${filters.minPrice}`);
+    if (filters.maxPrice) queryParams.push(`maxPrice=${filters.maxPrice}`);
+    if (arrFilterCategories.length > 0) {
+        arrFilterCategories.forEach(categoryId => {
+            queryParams.push(`categoryIds=${categoryId}`);
+        });
+    }
+
+    return baseUrl + queryParams.join("&");
+};
+
 const GetProducts = async () => {
     const filters = getFilters();
-    let url = `api/Products?name=${filters.name}&minPrice=${filters.minPrice}&maxPrice=${filters.maxPrice}`
-    if (filterCategories.length > 0) 
-        for (let i = 0; i < filterCategories.length; i++) {
-            url += `&categoryIds=${filterCategories[i]}`
-        }  
+    let url = await getUrlForGetProducts()  
     try {
         const response = await fetch(url
             , {
@@ -24,7 +36,7 @@ const GetProducts = async () => {
                 headers: {
                     'content-Type': 'application/json'
                 },
-                query: { categoryIds: filterCategories }
+                query: { categoryIds: arrFilterCategories }
             }
 
         );
@@ -51,7 +63,7 @@ const GetCategories = async () => {
         return categories;
     }
     catch (e) {
-        alert(e);
+        alert(e.message);
     }
 }
 
@@ -122,10 +134,10 @@ const addToCart = (product) => {
 
 const addFilterCategory = (catregory, event) => {
     if (event)
-        filterCategories.push(catregory.categoryId);
+        arrFilterCategories.push(catregory.categoryId);
     else {
-        let index = filterCategories.indexOf(catregory.categoryId)
-        filterCategories.splice(index,1)
+        let index = arrFilterCategories.indexOf(catregory.categoryId)
+        arrFilterCategories.splice(index,1)
     }
     ShowProductsCards();
 }

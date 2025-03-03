@@ -1,25 +1,40 @@
-﻿
-const editValueOfUpdatePage = () => {
-    const userName = document.querySelector("#UserNameUpdate")
-    const password = document.querySelector("#PasswordUpdate")
-    const firstName = document.querySelector("#FirstName")
-    const lastName = document.querySelector("#LastName")
-    const currentUser = JSON.parse(sessionStorage.getItem("user"))
-    userName.value = currentUser.userName
-    password.value = currentUser.password
-    firstName.value = currentUser.firstName
-    lastName.value = currentUser.lastName
-}
-editValueOfUpdatePage()
+﻿const getInputValue = (selector) => document.querySelector(selector)?.value.trim() || "";
 
-const getDetailsUpdate = () => {
-    return newUser = {
-        UserName: document.querySelector("#UserNameUpdate").value,
-        FirstName: document.querySelector("#FirstName").value,
-        LastName: document.querySelector("#LastName").value,
-        Password: document.querySelector("#PasswordUpdate").value
+const setUpdatePageValues = () => {
+    const currentUser = JSON.parse(sessionStorage.getItem("user"));
+    if (!currentUser) return;
+
+    document.querySelector("#UserNameUpdate").value = currentUser.userName.trim();
+    document.querySelector("#PasswordUpdate").value = currentUser.password.trim();
+    document.querySelector("#FirstName").value = currentUser.firstName.trim();
+    document.querySelector("#LastName").value = currentUser.lastName.trim();
+};
+
+const getUpdatedUserDetails = () => {
+    const newUser = {
+        UserName: getInputValue("#UserNameUpdate"),
+        Password: getInputValue("#PasswordUpdate"),
+        FirstName: getInputValue("#FirstName"),
+        LastName: getInputValue("#LastName"),
+    };
+
+    if (Object.values(newUser).some(value => !value)) {
+        alert("כל השדות הם חובה. נא למלא את כולם.");
+        return null;
     }
-}
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newUser.UserName)) {
+        alert("כתובת האימייל אינה תקינה.");
+        return null;
+    }
+
+    if (newUser.FirstName.length > 20 || newUser.LastName.length > 20) {
+        alert("שם פרטי ושם משפחה עד 20 תווים בלבד.");
+        return null;
+    }
+
+    return newUser;
+};
 const checkPassword = async () => {
     let password = document.querySelector("#PasswordUpdate").value
     let result = document.querySelector("#CheckPassword")
@@ -46,7 +61,15 @@ const checkPassword = async () => {
 }
 
 const updateUser = async () => {
-    const updateUser = getDetailsUpdate();
+    const updatedUser = getUpdatedUserDetails();
+    if (!updatedUser) return;
+
+    const currentUser = JSON.parse(sessionStorage.getItem("user"));
+    if (!currentUser) {
+        alert("שגיאה: אין משתמש מחובר.");
+        return;
+    }
+
     try {
       await checkPassword();
         const currentUser = JSON.parse(sessionStorage.getItem("user"))
@@ -57,19 +80,18 @@ const updateUser = async () => {
             },
             body: JSON.stringify(updateUser)
         })
-        if (!responsePut.ok)
-            throw new Error(`HTTP error! status ${responsePut.status}`)
+        if (responsePut.status === 400) throw new Error("!כל השדות חובה, בדוק את תקינותם");
 
+        if (!responsePut.ok) throw new Error("משהו השתבש, נסה שוב");
+      
         if (responsePut.status == 200) {
             sessionStorage.setItem("user", JSON.stringify(await responsePut.json()));
             alert(`פרטי משתמש ${currentUser.userId} עודכנו בהצלחה!`)
             window.location.href = "Products.html";
-        }
-           
+        }          
     }
     catch (error) {
-        alert("מצטערים משהו השתשב נסה שוב...\nהשגיאה:" + error)
+        alert(error.message)
     }
-
-
 }
+setUpdatePageValues()

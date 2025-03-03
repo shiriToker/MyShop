@@ -16,7 +16,7 @@
         <br />
 
     </div>
-    <button onclick="showSignUp()">אינך רשום? לחץ כאן</button>
+    <button onclick="showRegister()">אינך רשום? לחץ כאן</button>
     <div class="signUpDiv">
         <input placeholder="שם משתמש" id="UserNameSignUp" required type="email" />
         <br />
@@ -26,9 +26,9 @@
         <br />
         <input placeholder="סיסמה" id="PasswordSignUp" required type="password" onblur="checkPassword()" />
         <br />
+        <progress value="0" max="4" id="CheckPassword"></progress>
         <button id="SignUp" onclick="addNewUser()">הרשמה</button>
 
-        <progress value="0" max="4" id="CheckPassword"></progress>
     </div>
 </body>
 </html>

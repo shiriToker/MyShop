@@ -3,7 +3,7 @@
     "http": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "weatherforecast",
+      "launchUrl": "Products.html",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "School"
       },
@@ -13,7 +13,7 @@
     "https": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "weatherforecast",
+      "launchUrl": "Products.html",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "School"
       },

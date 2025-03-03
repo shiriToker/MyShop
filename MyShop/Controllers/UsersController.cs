@@ -58,6 +58,7 @@ namespace MyShop.Controllers
         public async Task<IActionResult> LogIn([FromQuery] string UserName, string Password)
         {
             _logger.LogInformation($"Loggin attempted with user name {UserName} and password {Password}");
+
             User user = await services.LogIn(Password, UserName);
 
             return (user == null ? NoContent() : Ok(user));

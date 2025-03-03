@@ -1,8 +1,8 @@
 ﻿const getInputValue = (selector) => document.querySelector(selector)?.value.trim() || "";
 
 const getAllDetailsForLogin = () => ({
-    UserName: getInputValue("#userNameLogin"),
-    Password: getInputValue("#passwordLogin"),
+    UserName: getInputValue("#UserNameLogin"),
+    Password: getInputValue("#PasswordLogin"),
 });
 
 const getAllDetailsForSignUp = () => {
@@ -17,7 +17,7 @@ const getAllDetailsForSignUp = () => {
         alert("כל השדות הם חובה. נא למלא את כולם.");
         return null;
     }
-
+    
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newUser.UserName)) {
         alert("כתובת האימייל אינה תקינה.");
         return null;
@@ -31,10 +31,8 @@ const getAllDetailsForSignUp = () => {
     return newUser;
 };
 
-const showSignUp = () => {
-    const signUp = document.querySelector(".signUpDiv")
-    signUp.classList.remove("signUpDiv")
-}
+const showRegister = () => document.querySelector('.signUpDiv').style.display = 'block';;
+
 
 const checkPassword = async () => {
     let password = getInputValue("#PasswordSignUp")
@@ -61,6 +59,7 @@ const checkPassword = async () => {
 }
 const addNewUser = async () => {
     const newUser = getAllDetailsForSignUp();
+    if (!newUser) return
 
     try {
         await checkPassword();
@@ -87,7 +86,8 @@ const isValidUser = (user) => user.UserName && user.Password;
 
 const logInUser = async () => {
     const user = getAllDetailsForLogin();
-    if (!isValidUser(user)) return alert("כל השדות חובה");
+    if (!isValidUser(user))
+      return alert("כל השדות חובה");
     try {
         const responsePost = await fetch(`api/Users/login?UserName=${user.UserName}&Password=${user.Password}`, {
             method: 'POST',
