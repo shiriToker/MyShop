@@ -14,7 +14,7 @@ const getUrlForGetProducts = async () => {
     const baseUrl = `api/Products?`;
     const queryParams = [];
 
-    if (filters.nameSearch) queryParams.push(`nameSearch=${encodeURIComponent(filters.nameSearch)}`);
+    if (filters.name) queryParams.push(`name=${encodeURIComponent(filters.name)}`);
     if (filters.minPrice) queryParams.push(`minPrice=${filters.minPrice}`);
     if (filters.maxPrice) queryParams.push(`maxPrice=${filters.maxPrice}`);
     if (arrFilterCategories.length > 0) {

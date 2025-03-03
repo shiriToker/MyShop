@@ -49,7 +49,6 @@ const deleteItem = (product) => {
     sessionStorage.setItem("orderList", JSON.stringify(orderList))
     ShowProductsCards()
     calculateCountAndAmount()
-
 }
 
 const payment =async () => {
