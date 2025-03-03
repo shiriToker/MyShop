@@ -93,7 +93,6 @@ const ShowOneCategory = (category) => {
     let cloneCategory = tmp.content.cloneNode(true);
     cloneCategory.querySelector(".OptionName").innerText = category.categoryName
     cloneCategory.querySelector('.opt').addEventListener("change", (event) => { addFilterCategory(category, event.currentTarget.checked) })
-    console.log(category.categoryId)
     document.getElementById('categoryList').appendChild(cloneCategory);
 }
 
@@ -121,11 +120,6 @@ const addToCart = (product) => {
 
 }
 
-
-
-
-
-
 const addFilterCategory = (catregory, event) => {
     if (event)
         filterCategories.push(catregory.categoryId);
@@ -133,22 +127,14 @@ const addFilterCategory = (catregory, event) => {
         let index = filterCategories.indexOf(catregory.categoryId)
         filterCategories.splice(index,1)
     }
-    console.log(filterCategories)
-
     ShowProductsCards();
 }
 
-
-
+const cartCount = () => {
+    const orderList = JSON.parse(sessionStorage.getItem("orderList")) || [];
+    document.getElementById("ItemsCountText").innerText = orderList.length
+}
 
 loadProducts();
-
 loadCategories();
-
-
-
-
-
-
-
-
+cartCount();

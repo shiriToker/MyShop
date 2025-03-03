@@ -100,7 +100,7 @@ namespace TestProject
             mockOrderRepository.Setup(x => x.createOrder(It.IsAny<Order>()))
                                .ReturnsAsync(order);
 
-            var orderService = new OrderService(mockOrderRepository.Object, mockProductRepository.Object);
+            var orderService = new OrderService(mockOrderRepository.Object, mockProductRepository.Object,null);
 
             // Act
             var result = await orderService.createOrder(order);

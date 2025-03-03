@@ -1,32 +1,43 @@
-﻿
-const getDetailsSignUp = () => {
-    return newUser = {
-        UserName: document.querySelector("#UserNameSignUp").value,
-        FirstName: document.querySelector("#FirstName").value,
-        LastName: document.querySelector("#LastName").value,
-        Password: document.querySelector("#PasswordSignUp").value
+﻿const getInputValue = (selector) => document.querySelector(selector)?.value.trim() || "";
+
+const getAllDetailsForLogin = () => ({
+    UserName: getInputValue("#userNameLogin"),
+    Password: getInputValue("#passwordLogin"),
+});
+
+const getAllDetailsForSignUp = () => {
+    const newUser = {
+        UserName: getInputValue("#userName"),
+        Password: getInputValue("#password"),
+        FirstName: getInputValue("#firstName"),
+        LastName: getInputValue("#lastName"),
+    };
+
+    if (Object.values(newUser).some(value => !value)) {
+        alert("כל השדות הם חובה. נא למלא את כולם.");
+        return null;
     }
-}
 
-const getDetailsLogIn = () => {
-    return newUser = {
-        UserName: document.querySelector("#UserNameLogin").value,
-        Password: document.querySelector("#PasswordLogin").value
-
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newUser.UserName)) {
+        alert("כתובת האימייל אינה תקינה.");
+        return null;
     }
-}
 
+    if (newUser.FirstName.length > 20 || newUser.LastName.length > 20) {
+        alert("שם פרטי ושם משפחה עד 20 תווים בלבד.");
+        return null;
+    }
+
+    return newUser;
+};
 
 const showSignUp = () => {
-
     const signUp = document.querySelector(".signUpDiv")
     signUp.classList.remove("signUpDiv")
-
-
 }
 
 const checkPassword = async () => {
-    let password = document.querySelector("#PasswordSignUp").value
+    let password = getInputValue("#PasswordSignUp")
     let result = document.querySelector("#CheckPassword")
     try {
         const responseCheckPassword = await fetch(`https://localhost:44351/api/Users/password/?password=${password}`, {
@@ -45,12 +56,12 @@ const checkPassword = async () => {
 
     }
     catch (error) {
-        throw (error)
+        throw (error.message)
     }
 
 }
 const addNewUser = async () => {
-    const newUser = getDetailsSignUp();
+    const newUser = getAllDetailsForSignUp();
 
     try {
         await checkPassword();
@@ -75,7 +86,7 @@ const addNewUser = async () => {
 }
 
 const logInUser = async () => {
-    const user = getDetailsLogIn();
+    const user = getAllDetailsForLogin();
     try {
         const responsePost = await fetch(`https://localhost:44351/api/Users/login?UserName=${user.UserName}&Password=${user.Password}`, {
             method: 'POST',

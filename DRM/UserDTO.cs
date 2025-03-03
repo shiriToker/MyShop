@@ -11,9 +11,9 @@ namespace DTO
     public record UserCreateDTO(
         [Required]
         [EmailAddress] string UserName,
-        [StringLength(100, ErrorMessage = "FirstName must be till 100 letters")]
+        [StringLength(20, ErrorMessage = "FirstName must be till 20 letters")]
         string FirstName,
-        [StringLength(100, ErrorMessage = "LastName must be till 100 letters")]
+        [StringLength(20, ErrorMessage = "LastName must be till 20 letters")]
         string LastName,
         [Required]
         string Password);

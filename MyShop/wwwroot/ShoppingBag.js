@@ -26,7 +26,7 @@ const ShowProductsCards = () => {
 const ShowOneProduct = (product) => {
     let tmp = document.getElementById('temp-row');
     let cloneProduct = tmp.content.cloneNode(true);
-    cloneProduct.querySelector('.image').style.backgroundImage = `./images/${product.imgUrl}`;
+    cloneProduct.querySelector('.image').style.backgroundImage = `url(./images/${product.imgUrl})`;
     cloneProduct.querySelector('.itemName').innerText = product.productName
     cloneProduct.querySelector('.price').textContent = product.price;
     cloneProduct.querySelector('.DeleteButton').addEventListener("click", () => { deleteItem(product); });
@@ -69,7 +69,6 @@ const createOrder = async (orderList) => {
     if (!sessionStorage.getItem("user")) {
         window.location.href = "Login.html";
         return false
-
     }
     let url = `api/Orders`
     const orderPost = createOrderPost(orderList)  
@@ -78,18 +77,21 @@ const createOrder = async (orderList) => {
             , {
                 method: 'Post',
                 headers: {
-                    'content-Type': 'application/json'
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(orderPost)
             }
         );
-        /*   const newOrder = await response.json();*/
+        if (response.status === 400) {
+            throw new Error('נמצאה פריצה, סכום לא תואם לנתונים')
+        }
+        else
         return response;
     }
         catch (e) {
         alert(e)
         return null
-        }
+     }
 }
 
 const createOrderPost = (orderList) => {

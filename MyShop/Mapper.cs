@@ -10,7 +10,7 @@ namespace MyShop
         public Mapper()
         {
             CreateMap<Category, CategoryDTO>();
-            CreateMap<Product, ProductDTO>().ForMember(o=> o.CaregoryCategoryName,op=>op.MapFrom(src=>src.Caregory.CategoryName));
+            CreateMap<Product, ProductDTO>();
             CreateMap<Order, OrderDTO>();
             CreateMap<User, UserGetByIdDTO>();
             CreateMap<UserCreateDTO, User>();

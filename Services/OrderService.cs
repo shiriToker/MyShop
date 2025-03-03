@@ -1,4 +1,5 @@
 ﻿using Entity;
+using Microsoft.Extensions.Logging;
 using Repository;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,14 @@ namespace Services
     {
         IOrderRepository repository;
         IProductRepository productRepository;
+        ILogger<OrderService> logger;
 
-        public OrderService(IOrderRepository myRepository,IProductRepository ProductRepository)
+        public OrderService(IOrderRepository myRepository,IProductRepository ProductRepository,ILogger<OrderService> logger1)
         {
 
             repository = myRepository;
             productRepository = ProductRepository;
+            logger = logger1;
         }
 
         public async Task<Order> getById(int id)
@@ -30,6 +33,7 @@ namespace Services
         {
             if (!await checkSum(order))
             {
+                logger.LogCritical("someone try to hak you!!!!!");
                 return null;             
             }
             return await repository.createOrder(order);

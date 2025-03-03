@@ -74,7 +74,7 @@ namespace TestProject
             var order = new Order { OrderSum = 6, OrderItems = orderItems };
             var orderRepository = new OrderRepository(_context);
             var productRepository = new ProductRepository(_context);
-            var orderService = new OrderService(orderRepository, productRepository);
+            var orderService = new OrderService(orderRepository, productRepository,null);
 
             // Act
             var result = await orderService.createOrder(order);
@@ -99,7 +99,7 @@ namespace TestProject
             var order = new Order { OrderSum = 3, OrderItems = orderItems };
             var orderRepository = new OrderRepository(_context);
             var productRepository = new ProductRepository(_context);
-            var orderService = new OrderService(orderRepository, productRepository);
+            var orderService = new OrderService(orderRepository, productRepository,null);
 
             // Act
             var result = await orderService.createOrder(order);
