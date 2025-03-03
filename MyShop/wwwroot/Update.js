@@ -57,7 +57,6 @@ const checkPassword = async () => {
     catch (error) {
         throw (error)
     }
-
 }
 
 const updateUser = async () => {
