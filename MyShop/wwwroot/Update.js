@@ -24,7 +24,7 @@ const checkPassword = async () => {
     let password = document.querySelector("#PasswordUpdate").value
     let result = document.querySelector("#CheckPassword")
     try {
-        const responseCheckPassword = await fetch(`https://localhost:44351/api/Users/password/?password=${password}`, {
+        const responseCheckPassword = await fetch(`api/Users/password/?password=${password}`, {
             method: 'POST',
             headers: {
                 'content-Type': 'application/json'
@@ -50,7 +50,7 @@ const updateUser = async () => {
     try {
       await checkPassword();
         const currentUser = JSON.parse(sessionStorage.getItem("user"))
-        const responsePut = await fetch(`https://localhost:44351/api/Users/${currentUser.userId}`, {
+        const responsePut = await fetch(`api/Users/${currentUser.userId}`, {
             method: 'PUT',
             headers: {
                 'content-Type': 'application/json'

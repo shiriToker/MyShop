@@ -40,19 +40,18 @@ const checkPassword = async () => {
     let password = getInputValue("#PasswordSignUp")
     let result = document.querySelector("#CheckPassword")
     try {
-        const responseCheckPassword = await fetch(`https://localhost:44351/api/Users/password/?password=${password}`, {
+        const responseCheckPassword = await fetch(`api/Users/password/?password=${password}`, {
             method: 'POST',
             headers: {
                 'content-Type': 'application/json'
             }
         })
-        if (!responseCheckPassword.ok) {
-            const DataPost = await responseCheckPassword.json();
+        const DataPost = await responseCheckPassword.json();
             result.value = DataPost
+
+        if (!responseCheckPassword.ok) {
             throw new Error("סיסמה לא חזקה")
         }
-        const DataPost = await responseCheckPassword.json();
-        result.value = DataPost
 
     }
     catch (error) {
@@ -65,7 +64,7 @@ const addNewUser = async () => {
 
     try {
         await checkPassword();
-        const responsePost = await fetch(`https://localhost:44351/api/Users`, {
+        const responsePost = await fetch(`api/Users`, {
             method: 'POST',
             headers: {
                 'content-Type': 'application/json'
@@ -76,19 +75,21 @@ const addNewUser = async () => {
             throw new Error(`!כל השדות חובה, בדוק את תקינותם`)
         if (!responsePost.ok)
             throw new Error(`משהו השתבש, נסה שוב`)
-        const dataPost = await responsePost.json();
         alert("משתמש נוסף בהצלחה")
     }
 
     catch (error) {
-        alert(error)
+        alert(error.message)
     }
 }
 
+const isValidUser = (user) => user.UserName && user.Password;
+
 const logInUser = async () => {
     const user = getAllDetailsForLogin();
+    if (!isValidUser(user)) return alert("כל השדות חובה");
     try {
-        const responsePost = await fetch(`https://localhost:44351/api/Users/login?UserName=${user.UserName}&Password=${user.Password}`, {
+        const responsePost = await fetch(`api/Users/login?UserName=${user.UserName}&Password=${user.Password}`, {
             method: 'POST',
             headers: {
                 'content-Type': 'application/json'
@@ -97,7 +98,7 @@ const logInUser = async () => {
         })
         if (responsePost.status == 400)
             throw new Error(`כל השדות חובה`)
-        if (responsePost.status == 400)
+        if (responsePost.status == 204)
             throw new Error(`משתמש לא רשום`)
         if (!responsePost.ok)
             throw new Error(`משהו השתבש, נסה שוב`)
@@ -107,6 +108,6 @@ const logInUser = async () => {
         window.location.href = "ShoppingBag.html";
     }
     catch (error) {
-        alert("שגיאה בכניסה למערכת")
+        alert(error.message)
     }
 }
