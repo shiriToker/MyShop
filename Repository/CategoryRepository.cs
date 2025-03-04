@@ -22,6 +22,7 @@ namespace Repository
         {
 
             return await _dbcontext.Categories.ToListAsync();
+            //shulamit
 
         } 
 
