@@ -1,4 +1,6 @@
 using Entity;
+using Microsoft.Extensions.Logging;
+using Moq;
 using Repository;
 using Services;
 
@@ -74,7 +76,10 @@ namespace TestProject
             var order = new Order { OrderSum = 6, OrderItems = orderItems };
             var orderRepository = new OrderRepository(_context);
             var productRepository = new ProductRepository(_context);
-            var orderService = new OrderService(orderRepository, productRepository,null);
+            var mockIlogger = new Mock<ILogger<OrderService>>();
+
+            var orderService = new OrderService(orderRepository, productRepository, mockIlogger.Object);
+
 
             // Act
             var result = await orderService.createOrder(order);
@@ -99,7 +104,9 @@ namespace TestProject
             var order = new Order { OrderSum = 3, OrderItems = orderItems };
             var orderRepository = new OrderRepository(_context);
             var productRepository = new ProductRepository(_context);
-            var orderService = new OrderService(orderRepository, productRepository,null);
+            var mockIlogger = new Mock<ILogger<OrderService>>();
+
+            var orderService = new OrderService(orderRepository, productRepository, mockIlogger.Object);
 
             // Act
             var result = await orderService.createOrder(order);

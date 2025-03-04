@@ -1,4 +1,5 @@
 using Entity;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.EntityFrameworkCore;
 using Repository;
@@ -73,7 +74,7 @@ namespace TestProject
             mockOrderRepository.Setup(x => x.createOrder(It.IsAny<Order>()))
                                .ReturnsAsync(order);
 
-            var orderService = new OrderService(mockOrderRepository.Object, mockProductRepository.Object);
+            var orderService = new OrderService(mockOrderRepository.Object, mockProductRepository.Object,null);
 
             // Act
             var result = await orderService.createOrder(order);
@@ -92,6 +93,8 @@ namespace TestProject
 
             var mockOrderRepository = new Mock<IOrderRepository>();
             var mockProductRepository = new Mock<IProductRepository>();
+            var mockIlogger = new Mock<ILogger<OrderService>>();
+
 
             var products = new List<Product> { new Product { ProductId = 1, Price = 6 } };
             mockProductRepository.Setup(x => x.getAll(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<int?>(), It.IsAny<int?[]>()))
@@ -100,7 +103,7 @@ namespace TestProject
             mockOrderRepository.Setup(x => x.createOrder(It.IsAny<Order>()))
                                .ReturnsAsync(order);
 
-            var orderService = new OrderService(mockOrderRepository.Object, mockProductRepository.Object,null);
+            var orderService = new OrderService(mockOrderRepository.Object, mockProductRepository.Object,mockIlogger.Object);
 
             // Act
             var result = await orderService.createOrder(order);
