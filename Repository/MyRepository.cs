@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using Repository.Exceptions;
+
 namespace Repository
    
 {
@@ -23,6 +25,14 @@ namespace Repository
         }
         public async Task<User> createUser(User user)
         {
+            var existingUser = await _dbcontext.Users
+            .FirstOrDefaultAsync(u => u.UserName == user.UserName);
+
+            if (existingUser != null)
+            {
+                throw new UserAlreadyExistsException("user with the same userName already exist");
+            }
+
             await _dbcontext.Users.AddAsync(user);
             await _dbcontext.SaveChangesAsync();
             return user;
@@ -30,6 +40,14 @@ namespace Repository
         }
         public async Task<User> updateUser(int id, User userToUpdate)
         {
+           var existingUser = await _dbcontext.Users
+          .FirstOrDefaultAsync(u => u.UserName == userToUpdate.UserName);
+
+            if (existingUser != null && existingUser.UserId!=id)
+            {
+                throw new UserAlreadyExistsException("user with the same userName already exist");
+            }
+
             userToUpdate.UserId = id;
             _dbcontext.Users.Update(userToUpdate);
             await _dbcontext.SaveChangesAsync();

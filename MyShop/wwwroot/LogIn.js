@@ -7,10 +7,10 @@ const getAllDetailsForLogin = () => ({
 
 const getAllDetailsForSignUp = () => {
     const newUser = {
-        UserName: getInputValue("#userName"),
-        Password: getInputValue("#password"),
-        FirstName: getInputValue("#firstName"),
-        LastName: getInputValue("#lastName"),
+        UserName: getInputValue("#UserNameSignUp"),
+        Password: getInputValue("#PasswordSignUp"),
+        FirstName: getInputValue("#FirstName"),
+        LastName: getInputValue("#LastName"),
     };
 
     if (Object.values(newUser).some(value => !value)) {
@@ -72,8 +72,11 @@ const addNewUser = async () => {
         })
         if (responsePost.status == 400)
             throw new Error(`!כל השדות חובה, בדוק את תקינותם`)
+        if (responsePost.status == 409)
+            throw new Error(`שם משתמש כבר קיים`)   
         if (!responsePost.ok)
             throw new Error(`משהו השתבש, נסה שוב`)
+            
         alert("משתמש נוסף בהצלחה")
     }
 

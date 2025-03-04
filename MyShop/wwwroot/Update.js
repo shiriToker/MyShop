@@ -59,15 +59,18 @@ const checkPassword = async () => {
     }
 }
 
-const updateUser = async () => {
-    const updatedUser = getUpdatedUserDetails();
-    if (!updatedUser) return;
-
+const checkIfExistUser = () => {
     const currentUser = JSON.parse(sessionStorage.getItem("user"));
     if (!currentUser) {
         alert("שגיאה: אין משתמש מחובר.");
-        return;
+        window.location.href = "Products.html";
     }
+}
+
+const updateUser = async () => {
+
+    const userToUpdate = getUpdatedUserDetails();
+    if (!userToUpdate) return;
 
     try {
       await checkPassword();
@@ -77,10 +80,10 @@ const updateUser = async () => {
             headers: {
                 'content-Type': 'application/json'
             },
-            body: JSON.stringify(updateUser)
+            body: JSON.stringify(userToUpdate)
         })
         if (responsePut.status === 400) throw new Error("!כל השדות חובה, בדוק את תקינותם");
-
+        if (responsePut.status === 409) throw new Error("שם משתמש כבר קיים");
         if (!responsePut.ok) throw new Error("משהו השתבש, נסה שוב");
       
         if (responsePut.status == 200) {
@@ -94,3 +97,4 @@ const updateUser = async () => {
     }
 }
 setUpdatePageValues()
+checkIfExistUser()
