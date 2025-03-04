@@ -22,7 +22,7 @@ namespace Repository
         public async Task<Order> getById(int id)
         {
             Order order = await _dbcontext.Orders.Include(currentOrder => currentOrder.User).FirstOrDefaultAsync(currentOrder => currentOrder.OrderId == id);
-            return order == null ? null : order;
+            return order;
 
         }
         public async Task<Order> createOrder(Order newOrder)

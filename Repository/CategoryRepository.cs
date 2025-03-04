@@ -17,12 +17,9 @@ namespace Repository
 
         }
 
-
         public async Task<List<Category>> getAll()
         {
-
             return await _dbcontext.Categories.ToListAsync();
-
         } 
 
     }
