@@ -42,14 +42,17 @@ namespace Repository
         {
            var existingUser = await _dbcontext.Users
           .FirstOrDefaultAsync(u => u.UserName == userToUpdate.UserName);
-
+            if (existingUser != null)
+            {
+                _dbcontext.Entry(existingUser).State = EntityState.Detached;
+            }
             if (existingUser != null && existingUser.UserId!=id)
             {
                 throw new UserAlreadyExistsException("user with the same userName already exist");
             }
 
             userToUpdate.UserId = id;
-            _dbcontext.Users.Update(userToUpdate);
+             _dbcontext.Users.Update(userToUpdate);
             await _dbcontext.SaveChangesAsync();
             return userToUpdate;
         }
