@@ -19,6 +19,10 @@ else if (environment == "School")
 {
     connectionString = builder.Configuration.GetConnectionString("SchoolConnection");
 }
+else if (environment == "Development")
+{
+    connectionString = builder.Configuration.GetConnectionString("SchoolConnection");
+}
 else
 {
     throw new Exception("Unknown environment");
