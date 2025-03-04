@@ -15,7 +15,7 @@
       "launchBrowser": true,
       "launchUrl": "Products.html",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "school"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7014;http://localhost:5247"
