@@ -60,8 +60,23 @@ namespace MyShop.Controllers
             _logger.LogInformation($"Loggin attempted with user name {UserName} and password {Password}");
 
             User user = await services.LogIn(Password, UserName);
+            if (user == null)
+                return NoContent();
 
-            return (user == null ? NoContent() : Ok(user));
+            // יצירת JWT
+            var secret = HttpContext.RequestServices.GetRequiredService<IConfiguration>( )["Jwt:Key"];
+            var token = JwtTokenHelper.GenerateJwtToken(user.UserId.ToString(), secret);
+            // שמירת הטוקן בקוקי
+            var isDev = HttpContext.Request.Host.Host == "localhost" || HttpContext.Request.Host.Host == "127.0.0.1";
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = !isDev, // בפיתוח לא דורש HTTPS
+                SameSite = isDev ? SameSiteMode.Lax : SameSiteMode.Strict,
+                Expires = DateTimeOffset.UtcNow.AddMinutes(30)
+            };
+            Response.Cookies.Append("jwtToken", token, cookieOptions);
+            return Ok(new { message = "התחברת בהצלחה" });
         }
 
         // PUT api/<UsersController>/5

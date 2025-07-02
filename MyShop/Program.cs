@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using Microsoft.EntityFrameworkCore;
 using MyShop.Middlewares;
 using NLog.Web;
@@ -6,6 +9,37 @@ using Repository;
 using Services;
 
 var builder = WebApplication.CreateBuilder(args);
+// הוספת Authentication עם JwtBearer
+var jwtKey = builder.Configuration["Jwt:Key"];
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtKey)),
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ClockSkew = TimeSpan.Zero
+    };
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            // שליפת הטוקן מה-Cookie
+            var token = context.Request.Cookies["jwtToken"];
+            if (!string.IsNullOrEmpty(token))
+            {
+                context.Token = token;
+            }
+            return Task.CompletedTask;
+        }
+    };
+});
 
 string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
@@ -45,6 +79,7 @@ builder.Services.AddMemoryCache();
 builder.Host.UseNLog();
 
 var app = builder.Build();
+app.UseAuthentication();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -53,15 +88,10 @@ if (app.Environment.IsDevelopment())
 //Configure the HTTP request pipeline.
 
 app.UseErrorHandlingMiddleware();
-
 app.UseRatingMiddleware();
-
+app.UseMiddleware<MyShop.Middlewares.JwtMiddleware>();
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
