@@ -73,7 +73,7 @@ namespace MyShop.Controllers
                 HttpOnly = true,
                 Secure = !isDev, // בפיתוח לא דורש HTTPS
                 SameSite = isDev ? SameSiteMode.Lax : SameSiteMode.Strict,
-                Expires = DateTimeOffset.UtcNow.AddMinutes(30)
+                Expires = DateTimeOffset.UtcNow.AddMinutes(2)
             };
             Response.Cookies.Append("jwtToken", token, cookieOptions);
             return Ok(new { message = "התחברת בהצלחה" });

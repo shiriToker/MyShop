@@ -65,22 +65,22 @@ const payment =async () => {
 }
 
 const createOrder = async (orderList) => {
-    if (!sessionStorage.getItem("user")) {
-        window.location.href = "Login.html";
-        return false
-    }
-    let url = `api/Orders`
-    const orderPost = createOrderPost(orderList)  
+    let url = "api/Orders";
+    const orderPost = createOrderPost(orderList)
     try {
         const response = await fetch(url
             , {
-                method: 'Post',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(orderPost)
             }
         );
+        if (response.status === 401) {
+            window.location.href = "LogIn.html";
+            return null;
+        }
         if (response.status === 400) {
             throw new Error('נמצאה פריצה, סכום לא תואם לנתונים')
         }
@@ -94,11 +94,9 @@ const createOrder = async (orderList) => {
 }
 
 const createOrderPost = (orderList) => {
-    return orderPost = {
+    return {
         orderSum: document.getElementById('totalAmount').textContent,
-            userId: JSON.parse(sessionStorage.getItem("user")).userId,
-            orderItems: orderList.map(item => { return { productId: item.productId, quantity:1 } })
-
+        orderItems: orderList.map(item => { return { productId: item.productId, quantity:1 } })
     }
 }
 
